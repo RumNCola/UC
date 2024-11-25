@@ -1,0 +1,10 @@
+README_inicial.md
+Enunciado.pdf
+*.pyc
+tests.py
+cliente/backend/__pycache__
+cliente/frontend/__pycache__
+servidor/__pycache__
+cliente/__pycache__
+servidor/archivos
+cliente/archivos

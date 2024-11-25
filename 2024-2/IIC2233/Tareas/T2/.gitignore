@@ -1,0 +1,19 @@
+#Los que agregue yo
+data/
+README_inicial.md
+Enunciado.pdf
+jardines.txt
+plantas.txt
+eventos.txt
+.keep
+pruebas.py
+#Los que venian puestos en el archivo del syllabus
+.ipynb_checkpoints
+.ipynb_checkpoints/
+.idea
+.DS_STORE
+.py[cod]
+*$py.class
+.vscode/
+__pycache__
+

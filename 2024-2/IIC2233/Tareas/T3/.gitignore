@@ -1,0 +1,9 @@
+*.csv
+*.zip
+data/
+tests_publicos/
+utilidades.py
+Enunciado.pdf
+README_inicial.md
+p.py
+__pycache__

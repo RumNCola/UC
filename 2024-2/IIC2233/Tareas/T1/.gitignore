@@ -1,0 +1,20 @@
+#Los que agregue yo
+utils.pyc
+predios.txt
+tests_publicos
+tests_publicos
+data/
+README_inicial.md
+T1_IIC2233_2024_2.pdf
+.keep
+
+#Los que venian puestos en el archivo del syllabus
+.ipynb_checkpoints
+.ipynb_checkpoints/
+.idea
+.DS_STORE
+.py[cod]
+*$py.class
+.vscode/
+__pycache__
+
