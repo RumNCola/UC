@@ -5,10 +5,14 @@ from PyQt5.QtGui import QPixmap, QFont
 from abc import ABC, abstractmethod
 import os
 from threading import Thread
+from time import sleep
 
 ruta_archivos = 'archivos'
 
 class VentanaNombreAgregar(QWidget):
+
+    senal_aceptar = pyqtSignal(str)
+
     def __init__(self):
         super().__init__()
         self.init_gui()
@@ -46,15 +50,20 @@ class VentanaNombreAgregar(QWidget):
     
     def aceptar(self):
         nombre = self.edit.text()
-        self.popup = VentanaAgregar(nombre)
-        self.popup.show()
-        self.close()
+        self.senal_aceptar.emit(nombre)
+        
+        # self.popup = VentanaAgregar(nombre)
+        # self.popup.show()
+        # self.close()
 
 
 class VentanaAgregar(QWidget):
     """
     Ventana para agregar un anuncio TTS
     """
+
+    senal_guardar = pyqtSignal(str, str)
+
     def __init__(self, nombre):
         super().__init__()
         self.init_gui()
@@ -95,10 +104,15 @@ class VentanaAgregar(QWidget):
     def guardar(self):
         texto = self.edit.text()
         if texto and self.nombre:
-            path = os.path.join('archivos', self.nombre + '.txt')
-            with open(path, 'w') as file:
-                file.write(texto)
-            print(f"Archivo guardado en: {path}")
+            self.senal_guardar.emit(self.nombre, texto)
+
+        
+        #     print(self.nombre)
+        #     path = os.path.join(ruta_archivos, self.nombre + '.txt')
+        #     print(path)
+        #     with open(path, 'w', encoding='utf-8') as file:
+        #         file.write(texto)
+            print(f"Archivo guardado en: {self.nombre}")
 
         else:
             print("No se pudo guardar el archivo. Faltan datos.")
@@ -114,9 +128,18 @@ class VentanaMain(QWidget):
     """
     Ventana Principal
     """
+
+    senal_agregar = pyqtSignal()
+
+    senal_eliminar = pyqtSignal(str)
+
+    senal_editar = pyqtSignal(str)
+
     def __init__(self):
         super().__init__()
         self.init_gui()
+        self.hilo = Thread(target= self.actualizar_lista)
+        self.hilo.start()
 
     def init_gui(self):
         """
@@ -161,15 +184,13 @@ class VentanaMain(QWidget):
         self.setGeometry(800, 450, 300, 150)
         self.setWindowTitle('Reproductor de Audio')
 
-        self.hilo = Thread(target= self.actualizar_lista)
-        self.hilo.start()
-
     def agregar(self):
         self.popup = VentanaNombreAgregar()
         self.popup.show()
 
     def editar(self):
-        pass
+        archivo = self.list.currentItem().text()
+        self.senal_editar.emit(archivo)
 
     def eliminar(self):
         """
@@ -187,9 +208,11 @@ class VentanaMain(QWidget):
             print(f'El archivo no existe')
         
     def actualizar_lista(self):
-        for archivo in os.listdir(ruta_archivos):
-            self.list.addItem(archivo)
-    
+        while True:
+            for archivo in os.listdir(ruta_archivos):
+                self.list.addItem(archivo)
+            sleep(2)
+
         
 
         
